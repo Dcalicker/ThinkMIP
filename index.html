@@ -350,7 +350,55 @@
   .trust .wrap{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; padding:26px 32px;}
   .trust p{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--steel-dark); letter-spacing:0.02em; }
 
-  /* ============ CONTACT / FOOTER ============ */
+  /* ============ CONTACT FORM ============ */
+  .contact-form-section{ background:var(--paper2); }
+  .form-wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;
+  }
+  @media (max-width:820px){ .form-wrap{ grid-template-columns:1fr; gap:36px; } }
+  .form-card{
+    background:var(--paper); border:1px solid var(--steel);
+    padding:36px 32px;
+  }
+  @media (max-width:640px){ .form-card{ padding:26px 20px; } }
+  .field{ margin-bottom:20px; }
+  .field label{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.06em; color:var(--steel-dark);
+    margin-bottom:8px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; font-family:'IBM Plex Sans', sans-serif; font-size:15px;
+    padding:12px 14px; border:1px solid var(--steel); border-radius:2px;
+    background:var(--paper); color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal);
+  }
+  .field textarea{ resize:vertical; min-height:120px; font-family:inherit; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:480px){ .field-row{ grid-template-columns:1fr; } }
+  .form-submit{
+    width:100%; border:none; cursor:pointer; margin-top:6px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.06em;
+    text-transform:uppercase; padding:14px 26px; border-radius:2px;
+    background:var(--amber); color:var(--ink); font-weight:500;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .form-submit:hover{ transform:translateY(-1px); background:#f2b658; }
+  .form-submit:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+  .form-status{
+    margin-top:14px; font-size:14px; padding:12px 14px; border-radius:2px; display:none;
+  }
+  .form-status.show{ display:block; }
+  .form-status.ok{ background:rgba(47,122,116,0.12); color:var(--teal); border:1px solid var(--teal); }
+  .form-status.err{ background:rgba(193,80,46,0.1); color:#a84422; border:1px solid #a84422; }
+  .form-note{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--steel-dark);
+    margin-top:14px; line-height:1.6;
+  }
+
+
   footer{ background:var(--ink); color:var(--paper); padding:88px 0 40px; }
   .footer-cta{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:56px; margin-bottom:36px; }
   .footer-cta h2{ font-size:clamp(28px,4vw,42px); max-width:14ch; }
@@ -549,7 +597,83 @@
   </div>
 </div>
 
-<footer id="contact">
+<section id="contact" class="contact-form-section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Get In Touch</div>
+      <h2>Tell us what isn't working</h2>
+      <p>Send a message directly to the founders — no intake team, no ticket queue. One of us will reply personally.</p>
+    </div>
+    <div class="form-wrap">
+      <div class="form-card">
+        <form id="mip-contact-form">
+          <div class="field">
+            <label for="cf-name">Full Name</label>
+            <input type="text" id="cf-name" name="name" required autocomplete="name">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="cf-org">Agency / Organization</label>
+              <input type="text" id="cf-org" name="organization" required autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="cf-title">Title</label>
+              <input type="text" id="cf-title" name="title" autocomplete="organization-title">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="cf-phone">Phone (optional)</label>
+              <input type="tel" id="cf-phone" name="phone" autocomplete="tel">
+            </div>
+          </div>
+          <div class="field">
+            <label for="cf-topic">Area of Interest</label>
+            <select id="cf-topic" name="topic">
+              <option>Service Planning</option>
+              <option>Depot &amp; Yard Operations</option>
+              <option>Scheduling &amp; Workforce Management</option>
+              <option>Safety &amp; Compliance</option>
+              <option>Dispatch &amp; Control Center</option>
+              <option>Technology Selection &amp; Implementation</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" required placeholder="Tell us about the challenge you're facing..."></textarea>
+          </div>
+          <!-- Honeypot field to deter basic spam bots; hidden from real users -->
+          <div style="position:absolute; left:-9999px;" aria-hidden="true">
+            <label for="cf-hp">Leave this field empty</label>
+            <input type="text" id="cf-hp" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+          <button type="submit" class="form-submit" id="cf-submit-btn">Send Message</button>
+          <div class="form-status" id="cf-status"></div>
+          <p class="form-note">Submissions are sent directly to the founders' inbox. We typically respond within one business day.</p>
+        </form>
+      </div>
+      <div>
+        <div class="mv-block" style="margin-bottom:28px;">
+          <span class="k mono">Prefer email?</span>
+          <h3>Reach us directly</h3>
+          <p>hello@thinkmip.com<br>dcalicker@thinkmip.com — Donovan<br>mdelgado@thinkmip.com — Marcos</p>
+        </div>
+        <div class="mv-block">
+          <span class="k mono">What happens next</span>
+          <h3>No intake queue</h3>
+          <p>Every message on this form goes straight to Donovan and Marcos — not to a sales team or a support inbox. You'll hear back from a managing partner, not a coordinator.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer">
   <div class="wrap">
     <div class="footer-cta">
       <h2>Let's talk about what isn't working yet.</h2>
@@ -567,5 +691,53 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  // REPLACE this with your own Formspree endpoint before going live.
+  // Sign up free at https://formspree.io, create a form, and paste its
+  // unique URL here (looks like https://formspree.io/f/xxxxxxxx).
+  var FORM_ENDPOINT = "https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID";
+
+  var form = document.getElementById('mip-contact-form');
+  var statusEl = document.getElementById('cf-status');
+  var btn = document.getElementById('cf-submit-btn');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    // Honeypot: if this hidden field got filled in, silently drop it.
+    if (form.elements['_gotcha'].value) return;
+
+    statusEl.className = 'form-status';
+    statusEl.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function(response){
+      if (response.ok) {
+        statusEl.textContent = "Thanks — your message has been sent. We'll be in touch soon.";
+        statusEl.className = 'form-status show ok';
+        form.reset();
+      } else {
+        return response.json().then(function(data){
+          var msg = (data && data.errors) ? data.errors.map(function(x){return x.message;}).join(', ') : 'Something went wrong. Please try again or email us directly.';
+          statusEl.textContent = msg;
+          statusEl.className = 'form-status show err';
+        });
+      }
+    }).catch(function(){
+      statusEl.textContent = "Couldn't send right now. Please email us directly at hello@thinkmip.com.";
+      statusEl.className = 'form-status show err';
+    }).finally(function(){
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    });
+  });
+})();
+</script>
 </body>
 </html>
